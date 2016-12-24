@@ -4,7 +4,6 @@ import telebot
 import constant
 import random
 from bs4 import BeautifulSoup
-import re
 from urllib.request import urlopen
 
 import requests
@@ -103,7 +102,7 @@ def you1(hy):
     link = urllib.parse.urlencode({"search_query": hy})
     content = urllib.request.urlopen("https://www.youtube.com/results?" + link)
     search_results = re.findall('href=\"/watch\?v=(.*?)\"', content.read().decode())
-    search_results = search_results[0:1:1]
+    search_results = search_results[2:3:1]
     choice_f = random_number.choice(search_results)
     yt_link = "https://www.youtube.com/watch?v=" + choice_f
     return yt_link
@@ -115,7 +114,7 @@ def hanlde_start(message):
     user_markup.row('/start', '/stop')
     user_markup.row('Повеселиться', 'Узнать новости', 'Курс валют')
     user_markup.row('Смотреть видео', 'Смотреть картинки', 'Закончить')
-    user_markup.row('Узнать о кино', 'Помоги с физикой', 'Закончить')
+    user_markup.row('Узнать о кино', 'Помоги с физикой')
     bot.send_message(str(message.from_user.id), "{0} \n"
                                                 ' чем бы ты хотел заняться ?  '.format(constant.hi),
                      reply_markup=user_markup)
@@ -127,25 +126,10 @@ def hanlde_menu(message):
     user_markup.row('/start', '/stop')
     user_markup.row('Повеселиться', 'Узнать новости', 'Курс валют')
     user_markup.row('Смотреть видео', 'Смотреть картинки', 'Закончить')
+    user_markup.row('Узнать о кино', 'Помоги с физикой')
     bot.send_message(str(message.from_user.id),
                      ' чем бы ты хотел заняться ?  ',
                      reply_markup=user_markup)
-
-
-@bot.message_handler(commands=['startplay'])
-def hanlde_menu(message):
-    user_markup1 = telebot.types.ReplyKeyboardMarkup(True, False)
-    user_markup1.row('/startplay', 'Начать', '/stopplay')
-    user_markup1.row('Вытащить 1', 'Вытащить 2', 'Вытащить 3')
-    bot.send_message(str(message.from_user.id),
-                     ' Введите:"Начать"  ', reply_markup=user_markup1)
-
-
-@bot.message_handler(commands=['stopplay'])
-def hanlde_stop(message):
-    hide_markup = telebot.types.ReplyKeyboardRemove()
-    bot.send_message(str(message.from_user.id), 'Игра закончена',
-                     reply_markup=hide_markup)
 
 
 @bot.message_handler(commands=['stop'])
@@ -176,7 +160,7 @@ def hanlde_text(message):
         n = 0
         while n < 4:
             if n == 0:
-                bot.send_message(str(message.from_user.id), str(n + 1) + ' ' + (re.sub(r'\[\'', "", str(new(n)))))
+                bot.send_message(str(message.from_user.id), str(n + 1) + '. ' + (re.sub(r'\[\'', "", str(new(n)))))
             else:
                 bot.send_message(str(message.from_user.id), str(n + 1) + '. ' + (new(n)))
             n += 1
@@ -188,7 +172,7 @@ def hanlde_text(message):
         i = 0
         while i < len(kino()):
             if i == 0:
-                bot.send_message(str(message.from_user.id), str(i + 1) + ' ' + (re.sub(r'\[\'', "", str(kino()[i]))) +
+                bot.send_message(str(message.from_user.id), str(i + 1) + '' + (re.sub(r'\[\'', "", str(kino()[i]))) +
                                  str('(' + (re.sub(r'\[\'', "", str(kino1()[i]))) + ')'))
                 bot.send_message(str(message.from_user.id), you1((re.sub(r'\[\'', "", str(kino()[i])))))
             elif i == len(kino()) - 1:
