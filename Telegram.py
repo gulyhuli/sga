@@ -80,7 +80,7 @@ def money(n):
 
 def ber(msg):
         ss = requests.Session()
-        r = ss.get('https://yandex.ua/images/search?text=' + msg)
+        r = ss.get('https://yandex.ru/images/search?text=' + msg)
         p = 'div.class\=\"serp-item.*?url\"\:\"(.*?)\"'
         response = r.text
         w = re.findall(p, response)
