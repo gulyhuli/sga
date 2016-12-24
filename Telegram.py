@@ -11,7 +11,8 @@ import urllib.request
 import re
 import random as random_number
 bot = telebot.TeleBot(constant.token)
-global h, kj, ml
+
+reg = 0
 
 
 def kino():
@@ -142,21 +143,15 @@ def hanlde_stop(message):
 # noinspection PyGlobalUndefined
 @bot.message_handler(content_types=['text'])
 def hanlde_text(message):
-    global kj, ml, nom
+    global reg
     if message.text == "Привет" or message.text == "привет" or message.text == "прив":
         bot.send_message(str(message.from_user.id), "{0} \n"
                                             'чем бы ты хотел заняться ?  '.format(random.choice(constant.hello)))
-        kj = 0
-        ml = 0
-        nom = 0
+        reg = 0
     elif message.text == "/start":
-        kj = 0
-        ml = 0
-        nom = 0
+        reg = 0
     elif message.text == "Узнать новости" or message.text == "узнать новости":
-        kj = 0
-        ml = 0
-        nom = 0
+        reg = 0
         n = 0
         while n < 4:
             if n == 0:
@@ -166,9 +161,7 @@ def hanlde_text(message):
             n += 1
     elif message.text == "Узнать о кино" or message.text == "узнать о кино":
         bot.send_message(str(message.from_user.id), "Подождите несколько секунд, я попробую найти что-нибудь.....")
-        kj = 0
-        ml = 0
-        nom = 0
+        reg = 0
         i = 0
         while i < len(kino()):
             if i == 0:
@@ -188,43 +181,31 @@ def hanlde_text(message):
         bot.send_message(str(message.from_user.id), "Это все,что я смог найти")
     elif message.text == "Помоги с физикой" or message.text == "Физика":
         bot.send_message(str(message.from_user.id), "Введи номер задания,например,1.123")
-        kj = 0
-        ml = 0
-        nom = 1
+        reg = 1
     elif message.text == "Закончить":
-        kj = 0
-        ml = 0
-        nom = 0
+        reg = 0
     elif message.text == "Смотреть картинки":
-        kj = 1
-        ml = 0
-        nom = 0
+        reg = 2
         bot.send_message(str(message.from_user.id), "Что ты хочешь посмотреть?")
 
     elif message.text == "Смотреть видео":
-        ml = 1
-        kj = 0
-        nom = 0
+        reg = 3
         bot.send_message(str(message.from_user.id), "Что ты хочешь посмотреть?")
     elif message.text == "Курс валют" or message.text == "курс валют":
-        kj = 0
-        ml = 0
-        nom = 0
+        reg = 0
         bot.send_message(str(message.from_user.id), "Информация от ЦБ РФ\n" +
                                                     "Доллар США" + ":" + money(0) + ' руб' + "\n" +
                                                     "Евро" + ":" + money(1) + ' руб')
 
     elif message.text == "Повеселиться" or message.text == "повеселиться":
-        kj = 0
-        ml = 0
-        nom = 0
+        reg = 0
         bot.send_message(str(message.from_user.id), "Анекдот:\n" + random.choice(constant.hap))
-    elif nom == 1:
+    elif reg == 1:
         bot.send_message(str(message.from_user.id), "Это поможет тебе,а не я ")
         bot.send_message(str(message.from_user.id), irodov(message.text))
-    elif kj == 1:
+    elif reg == 2:
         bot.send_photo(str(message.from_user.id), ber(message.text))
-    elif ml == 1:
+    elif reg == 3:
         bot.send_message(str(message.from_user.id), text=you(message.text))
     else:
         bot.send_message(str(message.from_user.id), "К сожалению , я пока не могу понять все то , что ты мне говоришь")
