@@ -237,7 +237,7 @@ def hanlde_text(message):
         nom = 0
         bot.send_message(str(message.from_user.id), "Информация от ЦБ РФ\n" +
                                                     "Доллар США" + ":" + money(0) + ' руб' + "\n" +
-                                                    "Евро" + ":" + money(1) + 'руб')
+                                                    "Евро" + ":" + money(1) + ' руб')
 
     elif message.text == "Повеселиться" or message.text == "повеселиться":
         kj = 0
