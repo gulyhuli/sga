@@ -185,9 +185,9 @@ def hanlde_text(message):
         n = 0
         while n < 4:
             if n == 0:
-                bot.send_message(str(message.from_user.id),str(n + 1) + ' ' + (re.sub(r'\[\'', "", str(new(n)))))
+                bot.send_message(str(message.from_user.id),str(n + 1) + '. ' + (re.sub(r'\[\'', "", str(new(n)))))
             else:
-                bot.send_message(str(message.from_user.id), str(n + 1) + ' ' + (new(n)))
+                bot.send_message(str(message.from_user.id), str(n + 1) + '. ' + (new(n)))
             n += 1
     elif message.text == "Узнать о кино" or message.text == "узнать о кино":
         bot.send_message(str(message.from_user.id), "Подождите несколько секунд, я попробую найти что-нибудь.....")
