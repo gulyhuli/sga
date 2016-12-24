@@ -187,12 +187,12 @@ def hanlde_text(message):
     elif message.text == "Смотреть картинки":
         reg = 2
         bot.send_message(str(message.from_user.id),
-                         "Что ты хочешь посмотреть? После окончания просмотра, нажмите \Закончить")
+                         "Что ты хочешь посмотреть? После окончания просмотра, нажмите 'Закончить'")
 
     elif message.text == "Смотреть видео":
         reg = 3
         bot.send_message(str(message.from_user.id),
-                         "Что ты хочешь посмотреть? После окончания просмотра, нажмите \Закончить")
+                         "Что ты хочешь посмотреть? После окончания просмотра, нажмите 'Закончить'")
     elif message.text == "Курс валют" or message.text == "курс валют":
         reg = 0
         bot.send_message(str(message.from_user.id), "Информация от ЦБ РФ\n" +
