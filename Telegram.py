@@ -7,18 +7,11 @@ from bs4 import BeautifulSoup
 import re
 from urllib.request import urlopen
 
-import telegram
-from time import sleep
-#
-import logging
 import requests
 import urllib.request
-import json
-import urllib.request
-import re, sys, os, platform
+import re
 import random as random_number
 bot = telebot.TeleBot(constant.token)
-# noinspection PyGlobalUndefined
 global h, kj, ml
 
 
@@ -48,8 +41,8 @@ def new(n):
     H = urlopen(URL)
     list25 = H.read().decode('utf-8')
     list1 = str(BeautifulSoup(list25))
-    result = (re.findall(r'<li class="list__item"><a aria-label=\".*?\" class',list1))
-    result1 = re.sub(r'<li class="list__item"><a aria-label=',"",str(result))
+    result = (re.findall(r'<li class="list__item"><a aria-label=\".*?\" class', list1))
+    result1 = re.sub(r'<li class="list__item"><a aria-label=',"", str(result))
     result2 = result1.split('class\', \'')
     return (result2)[n]
 
@@ -166,11 +159,9 @@ def hanlde_stop(message):
 @bot.message_handler(content_types=['text'])
 def hanlde_text(message):
     global kj, ml, nom
-
     if message.text == "Привет" or message.text == "привет" or message.text == "прив":
         bot.send_message(str(message.from_user.id), "{0} \n"
-                                                    ' чем бы ты хотел заняться ?  '.format(
-            random.choice(constant.hello)))
+                                            'чем бы ты хотел заняться ?  '.format(random.choice(constant.hello)))
         kj = 0
         ml = 0
         nom = 0
@@ -185,7 +176,7 @@ def hanlde_text(message):
         n = 0
         while n < 4:
             if n == 0:
-                bot.send_message(str(message.from_user.id),str(n + 1) + '. ' + (re.sub(r'\[\'', "", str(new(n)))))
+                bot.send_message(str(message.from_user.id), str(n + 1) + ' ' + (re.sub(r'\[\'', "", str(new(n)))))
             else:
                 bot.send_message(str(message.from_user.id), str(n + 1) + '. ' + (new(n)))
             n += 1
@@ -251,128 +242,6 @@ def hanlde_text(message):
         bot.send_photo(str(message.from_user.id), ber(message.text))
     elif ml == 1:
         bot.send_message(str(message.from_user.id), text=you(message.text))
-
-    elif message.text == 'Вытащить 1' or message.text == 'Вытащить 2' or message.text == 'Вытащить 3'\
-            or message.text == 'Начать' \
-            or message.text == "начать" or message.text == "/stopplay" or message.text == "/startplay":
-        global l, l1, h
-
-        if message.text == "/stopplay":
-            h = 0
-        elif message.text == "/startplay" or message.text == "Начать" or message.text == "начать":
-            bot.send_message(str(message.from_user.id), "Я умею играть в игру спички.Правила очень простые.Выпадает "
-                                                        "рандомное число \n "
-                                                        "спичек.Мы поочереди тянем спички,от 1 до 3.Проиграет тот ,"
-                                                        "кто вытащит последнюю\n  ")
-
-            l = random.choice(range(9, 55))
-            h = 1
-            bot.send_message(str(message.from_user.id),
-                             "Автоматически выпало число: " + str(l) + "\nесли выпадит 1,то ходишь ты,если 0,то я  ")
-
-            if (l - 1) % 4 == 3:
-                l1 = str(int(l) - 3)
-                bot.send_message(str(message.from_user.id), "Автоматически выпало число :" + " 0\n" +
-                                 "Я хожу.Из {0} я отнимаю 3 . Осталость {1}.Твой ход".format(l, l1))
-            if (l - 1) % 4 == 2:
-                l1 = str(int(l) - 2)
-                bot.send_message(str(message.from_user.id), "Автоматически выпало число :" + "0\n" +
-                                 "Я хожу.Из {0} я отнимаю 2 . Осталость {1}.Твой ход".format(l, l1))
-            if (l - 1) % 4 == 1:
-                l1 = str(int(l) - 1)
-                bot.send_message(str(message.from_user.id), "Автоматически выпало число :" + "0\n" +
-                                 "Я хожу.Из {0} я отнимаю 1 . Осталость {1}.Твой ход".format(l, l1))
-            if (l - 1) % 4 == 0:
-                bot.send_message(str(message.from_user.id), "Автоматически выпало число :" + "1\n" +
-                                 "Ты ходишь.")
-
-            l1 = l
-            h = 1
-        elif h == 1 and (message.text == 'Вытащить 1' or message.text == 'Вытащить 2' or message.text == 'Вытащить 3'):
-            if message.text == 'Вытащить 1':
-                l1 = str(int(l) - 1)
-                bot.send_message(str(message.from_user.id), "Ты из {0} вычел 1 , осталость {1}".format(l, l1))
-                if int(l1) == 4:
-                    l = str(int(l1) - 3)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из 4 я отнимаю 3 . Осталость 1.Ты проиграл.\n'
-                                                                'Игра закончена'.format(l1, l))
-                    h = 0
-                elif int(l1) == 3:
-                    l = str(int(l1) - 2)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из 3 я отнимаю 2 . Осталость 1.Ты проиграл.\n'
-                                                                'Игра закончена'.format(l1, l))
-                    h = 0
-                elif int(l1) == 2:
-                    l = str(int(l1) - 1)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из 2 я отнимаю 1 . Осталость 1.Ты проиграл.\n'
-                                                                'Игра закончена'.format(l1, l))
-                    h = 0
-                else:
-                    l = str(int(l1) - 3)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из {0} я отнимаю 3 . Осталость {1}.Ты ходишь.\n'
-                                                                .format(l1, l))
-
-            elif message.text == 'Вытащить 2':
-                l1 = str(int(l) - 2)
-                bot.send_message(str(message.from_user.id), "Ты из {0} вычел 2 , осталость {1}".format(l, l1))
-
-                if int(l1) == 4:
-                    l = str(int(l1) - 3)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из 4 я отнимаю 3 . Осталость 1.Ты проиграл.\n'
-                                                                'Игра закончена'.format(l1, l))
-                    h = 0
-                elif int(l1) == 3:
-                    l = str(int(l1) - 2)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из 3 я отнимаю 2 . Осталость 1.Ты проиграл.\n'
-                                                                'Игра закончена'.format(l1, l))
-                    h = 0
-                elif int(l1) == 2:
-                    l = str(int(l1) - 1)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из 2 я отнимаю 1 . Осталость 1.Ты проиграл.\n'
-                                                                'Игра закончена'.format(l1, l))
-                    h = 0
-                else:
-                    l = str(int(l1) - 2)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                '.Из {0} я отнимаю 2 . Осталость {1}.Ты ходишь.\n'
-                                                                .format(l1, l))
-            elif message.text == 'Вытащить 3':
-                l1 = str(int(l) - 3)
-                bot.send_message(str(message.from_user.id), "Ты из {0} вычел 3 , осталость {1}".format(l, l1))
-                if int(l1) == 4:
-                    l = str(int(l1) - 3)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из 4 я отнимаю 3 . Осталость 1.Ты проиграл.\n'
-                                                                'Игра закончена'.format(l1, l))
-                    h = 0
-                elif int(l1) == 3:
-                    l = str(int(l1) - 2)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из 3 я отнимаю 2 . Осталость 1.Ты проиграл.\n'
-                                                                'Игра закончена'.format(l1, l))
-                    h = 0
-                elif int(l1) == 2:
-                    l = str(int(l1) - 1)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                'Из 2 я отнимаю 1 . Осталость 1.Ты проиграл.\n'
-                                                                'Игра закончена'.format(l1, l))
-                    h = 0
-                else:
-                    l = str(int(l1) - 1)
-                    bot.send_message(str(message.from_user.id), 'Я хожу \n'
-                                                                '.Из {0} я отнимаю 1 . Осталость {1}.Ты ходишь.\n'
-                                                                .format(l1, l))
-        else:
-            bot.send_message(str(message.from_user.id),
-                             "К сожалению ,игра закончилась.Введите 'Поиграть' ,чтобы начать заново ")
-
     else:
         bot.send_message(str(message.from_user.id), "К сожалению , я пока не могу понять все то , что ты мне говоришь")
     print("{0} от {1} ".format(message.text, message.from_user.first_name))
